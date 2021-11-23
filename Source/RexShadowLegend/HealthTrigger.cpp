@@ -39,15 +39,14 @@ void AHealthTrigger::Tick(float DeltaTime) {
 void AHealthTrigger::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	ACharacterController* character = Cast<ACharacterController>(OtherActor);
 	if (character) {
-		GLog->Log(TEXT("TALUT"));
 		CharacterInside = character;
+		CharacterInside->ChangeHealth(Amount);
+		CurrentTimer = 0.f;
 	}
 }
 
 void AHealthTrigger::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
-	GLog->Log(TEXT("GET OUT"));
 	CharacterInside = nullptr;
-	CurrentTimer = 0.f;
 }
 
 void AHealthTrigger::TimerUpdate(float DeltaTime) {
@@ -55,7 +54,7 @@ void AHealthTrigger::TimerUpdate(float DeltaTime) {
 		return;
 	}
 	if (CurrentTimer >= Timer) {
-		CharacterInside->Health += Amount;
+		CharacterInside->ChangeHealth(Amount);
 		CurrentTimer = 0.f;
 	}
 	else {
