@@ -23,8 +23,11 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 	UPROPERTY(VisibleAnywhere)
 	UProjectileMovementComponent* Projectile;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Mesh;
+	UPROPERTY()
+	UMaterialInterface* Material = nullptr;
 };

@@ -3,11 +3,13 @@
 
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
+#include "Engine/EngineTypes.h"
+#include "WallPainting.h"
+#include "Math/Vector.h"
 
 // Sets default values
 AProjectile::AProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	RootComponent = Mesh;
@@ -16,19 +18,27 @@ AProjectile::AProjectile()
 	SetActorScale3D(FVector(0.1f, 0.1f, 0.1f));
 	Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
 	Projectile->InitialSpeed = 3000.f;
+	static ConstructorHelpers::FObjectFinder<UMaterial> MaterialAsset(TEXT("Material'/Game/ThirdPersonCPP/MaterialS/d.d'"));
+	Material = MaterialAsset.Object;
 }
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void AProjectile::Tick(float DeltaTime)
 {
+	FHitResult HitResult;
 	Super::Tick(DeltaTime);
-
+	if (HitResult.GetActor())
+	{
+		FRotator rotate;
+		ADecalActor* Decal = GetWorld()->SpawnActor<AWallPainting>(HitResult.ImpactPoint, rotate);
+		Decal->SetDecalMaterial(Material);
+		Destroy();
+	}
 }
 
