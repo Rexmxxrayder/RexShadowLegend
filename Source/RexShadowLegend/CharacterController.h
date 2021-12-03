@@ -1,7 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <string>
+#include <iostream>
 #include "RexShadowLegendCharacter.h"
+#include "MySaveGame.h"
+#include "Kismet/GameplayStatics.h"
 #include "CharacterController.generated.h"
 
 UCLASS()
@@ -12,9 +16,12 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-
+	UFUNCTION(BlueprintCallable, category = "Functionnnnn")
+	void SaveGame(FString name);
+	UFUNCTION(BlueprintCallable, category = "Functionnnnn")
+	void LoadGame(FString name);
 	UFUNCTION()
-	void ChangeHealth(float amount);
+	void ChangeHealth(float amount, bool setTo = false);
 	UFUNCTION()
 	void Respawn();
 	UFUNCTION()
@@ -23,7 +30,7 @@ public:
 	void Launch();
 	UPROPERTY(EditAnywhere)
 	float Health = 50.f;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float CurrentHealth = 50.f;
 	UPROPERTY(EditAnywhere)
 	float ReviveTime = 2.f;
