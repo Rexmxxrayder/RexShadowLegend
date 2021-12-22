@@ -20,7 +20,7 @@ public:
 	void SaveGame(FString name);
 	UFUNCTION(BlueprintCallable, category = "Functionnnnn")
 	void LoadGame(FString name);
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, category = "Functionnnnn")
 	void ChangeHealth(float amount, bool setTo = false);
 	UFUNCTION()
 	void Respawn();
